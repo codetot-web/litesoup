@@ -6,6 +6,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+### Added
+
+- **Cloudflare real-IP support on install (`mod_remoteip`).** `install/lib/apache.sh`
+  now enables `mod_remoteip` and writes `/etc/apache2/conf-available/cloudflare-realip.conf`
+  (`RemoteIPHeader CF-Connecting-IP` + the Cloudflare IPv4/IPv6 trusted-proxy ranges,
+  fetched live from `cloudflare.com/ips-v4|v6` with a built-in offline fallback). Without
+  this, proxied sites log the CF edge IP instead of the real visitor — so fail2ban can't
+  ban real attackers and analytics/WP see CF IPs. Idempotent; re-running refreshes ranges.
+  (`install/lib/apache.sh`)
+
 ## [0.10.14] - 2026-09-07
 
 ### Fixed
